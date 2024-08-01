@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Stop Watch Using Js</h1>
+    <div class="stopwatch">
+        <div class="time" id="display">00:00:00</div>
+        <div class="buttons">
+            <button onclick="start()">Start</button>
+            <button onclick="lap()">Lap</button>
+            <button onclick="stop()">Stop</button>
+            <button onclick="reset()">Reset</button>
+        </div>
+        <div class="laps" id="laps"></div>
+    </div>
+</div>
+    <script>
+        let startTime;
+let updatedTime;
+let difference;
+let tInterval;
+let running = 0;
+let lapNumber = 0;
+
+function start() {
+  if (!running) {
+    startTime = new Date().getTime();
+    tInterval = setInterval(getShowTime, 1);
+    running = 1;
+  }
+}
+
+function stop() {
+  if (running) {
+    clearInterval(tInterval);
+    running = 0;
+  }
+}
+
+function lap() {
+  if (running) {
+    let lapTime = document.getElementById("display").innerHTML;
+    lapNumber++;
+    let lapDetails = document.createElement("div");
+    lapDetails.innerHTML = 'Lap ' + lapNumber + ': ' + lapTime;
+    document.getElementById("laps").appendChild(lapDetails);
+  }
+}
+
+function reset() {
+  clearInterval(tInterval);
+  running = 0;
+  lapNumber = 0;
+  document.getElementById("display").innerHTML = '00:00:00';
+  document.getElementById("laps").innerHTML = '';
+}
+
+function getShowTime() {
+  updatedTime = new Date().getTime();
+  difference = updatedTime - startTime;
+  let hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  let minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+  let seconds = Math.floor((difference % (1000 * 60)) / 1000);
+  hours = (hours < 10) ? "0" + hours : hours;
+  minutes = (minutes < 10) ? "0" + minutes : minutes;
+  seconds = (seconds < 10) ? "0" + seconds : seconds;
+  document.getElementById('display').innerHTML = hours + ':' + minutes + ':' + seconds;
+}
+
+    </script>
+</body>
+</html>
